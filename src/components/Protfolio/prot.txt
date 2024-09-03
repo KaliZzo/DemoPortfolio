@@ -1,0 +1,165 @@
+.protfolio{
+    position: relative;
+    .progress{
+        position: sticky;
+        top: 0;
+        left: 0;
+        padding-top: 50px;
+        text-align: center;
+        color: orange;
+        font-size: 36px;
+
+
+        
+
+
+        .progressBar{
+
+            height: 10px;
+            background-color: white;
+        }
+    }
+   
+
+    .container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        .wrapper{
+            max-width: 1366px;
+            height: 100%;
+            margin: auto;
+            display: flex;
+            gap: 50px;
+            .imageContainer{
+                flex:1;
+            height: 50%;
+            align-items: center;
+            justify-content: center;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+        .textContainer{
+            flex:1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+
+            h2{
+                font-size: 72px;
+            }
+
+            p{
+                color:gray;
+                font-size: 20px;
+
+            }
+
+            button{
+                background-color: orange;
+                border-radius: 10px;
+                border: none;
+                padding: 10px;
+                width: 200px;
+                cursor: pointer;
+            }
+        }
+    }
+    }
+}
+=========================================
+import { useRef } from 'react';
+import './protfolio.scss'
+import {motion, useScroll, useSpring, useTransform} from 'framer-motion'
+
+const items = [
+    {
+        id:1,
+        title:"React Commerce",
+        img:"https://images.pexels.com/photos/15804651/pexels-photo-15804651/free-photo-of-people-together-on-motorcycle-on-road-in-mountains.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+        desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni a distinctio necessitatibus sapiente porro error consequuntur voluptatum quibusdam officiis amet nesciunt possimus expedita dicta, odit repellat nam perferendis pariatur ipsa?",
+    },
+
+    {
+        id:2,
+        title:"Next.js Commerce",
+        img:"https://images.pexels.com/photos/26051261/pexels-photo-26051261/free-photo-of-a-small-echidna-is-sitting-on-the-ground.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+        desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni a distinctio necessitatibus sapiente porro error consequuntur voluptatum quibusdam officiis amet nesciunt possimus expedita dicta, odit repellat nam perferendis pariatur ipsa?",
+    },
+
+    {
+        id:3,
+        title:"Vanilla JS APP ",
+        img:"https://images.pexels.com/photos/26572408/pexels-photo-26572408/free-photo-of-silhouette-of-man-by-the-sea-during-sunset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+        desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni a distinctio necessitatibus sapiente porro error consequuntur voluptatum quibusdam officiis amet nesciunt possimus expedita dicta, odit repellat nam perferendis pariatur ipsa?",
+    },
+
+    {
+        id:4,
+        title:"Music App",
+        img:"https://images.pexels.com/photos/23445751/pexels-photo-23445751/free-photo-of-a-tree-with-a-green-leafy-canopy.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+        desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni a distinctio necessitatibus sapiente porro error consequuntur voluptatum quibusdam officiis amet nesciunt possimus expedita dicta, odit repellat nam perferendis pariatur ipsa?",
+    },
+];
+
+const Single = ({item}) =>{
+
+    const ref = useRef()
+
+    const {scrollYProgress} = useScroll({target:ref, offset:["start start", "end start "]})
+
+    const y =useTransform(scrollYProgress,[0,1], ["-0%", "300%"])
+
+    return( <section ref={ref}>
+            <div className="container">
+                <div className="wrapper">
+                    <div className="imageContainer">
+                <img src={item.img} alt='' />
+                </div>
+                <motion.div className="textContainer" style={{y}}>
+                    <h2>{item.title}</h2>
+                    <p>{item.desc}</p>
+                    <button>See Demo</button>
+                </motion.div>
+                </div>
+            </div>
+
+          </section>
+    )
+}
+
+
+ const Protfolio = () => {
+
+    const ref = useRef()
+
+    const {scrollYProgress} = useScroll({target:ref, offset:["end end", "start start "]})
+
+    const scaleX = useSpring(scrollYProgress,{
+        stiffness:100,
+        damping:30,
+    })
+  return (
+    <div className='protfolio' ref ={ref}>
+        <div className="progress">
+            <h1>Featured Works</h1>
+            <motion.div style={{scaleX}} className="progressBar"> </motion.div>
+        </div>
+        {items.map(item=>(
+            <Single item={item} key={item.id}/> 
+        ))}
+    </div>
+  )
+}
+
+ export default Protfolio
+ 
